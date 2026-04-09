@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "neocognitive",
+      "runtimeExecutable": "/nix/var/nix/profiles/default/bin/nix-shell",
+      "runtimeArgs": ["-p", "nodejs_22", "--run", "npm run dev -- --port 4321"],
+      "port": 4321
+    }
+  ]
+}

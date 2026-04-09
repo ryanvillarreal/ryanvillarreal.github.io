@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(json|yml|yaml|config|conf\\)$\")",
+      "Bash(wc:*)",
+      "Read(//nix/store/c20m7jl3x7a951sakyyfwngaxvlw7s63-nix-2.28.3/bin/**)",
+      "Read(//nix/**)",
+      "Bash(/nix/var/nix/profiles/default/bin/nix-shell -p nodejs_22 --run \"npm install\")",
+      "Bash(/nix/var/nix/profiles/default/bin/nix-shell -p nodejs_22 --run \"npm run build\")",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}

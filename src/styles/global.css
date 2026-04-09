@@ -1,0 +1,279 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #0a0805;
+  --color-grove: #110e09;
+  --color-canopy: #1a1510;
+  --color-border: #2d2818;
+  --color-leaf: #5a7a4a;
+  --color-glow: #7a9e65;
+  --color-sacred: #9ab882;
+  --color-scripture: #f2ebe0;
+  --color-mist: #c8bfa8;
+
+  /* Amber — the divine accent */
+  --color-amber: #c4853a;
+  --color-gold: #d4a050;
+  --color-gilt: #e8c070;
+
+  --font-serif: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-verse: 'EB Garamond', serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-scripture);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* Nature photo — fixed behind everything */
+#bg-nature {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=80&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center top;
+  pointer-events: none;
+}
+
+/* Dark overlay — tinted to match earth palette, lets photo breathe at ~20% */
+#bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    160deg,
+    rgba(10, 8, 5, 0.82) 0%,
+    rgba(10, 8, 5, 0.74) 50%,
+    rgba(10, 8, 5, 0.88) 100%
+  );
+  pointer-events: none;
+}
+
+/* Particles sit above the overlay */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Noise texture above particles */
+.site-wrapper {
+  position: relative;
+  z-index: 4;
+}
+
+.font-sermon {
+  font-family: var(--font-serif);
+  letter-spacing: 0.05em;
+}
+
+.font-verse {
+  font-family: var(--font-verse);
+}
+
+/* Amber glow for headlines — sacred, warm, organic */
+.glow-text {
+  text-shadow:
+    0 0 25px rgba(196, 133, 58, 0.55),
+    0 0 70px rgba(196, 133, 58, 0.2);
+}
+
+.glow-text-sm {
+  text-shadow:
+    0 0 12px rgba(196, 133, 58, 0.35),
+    0 0 35px rgba(196, 133, 58, 0.12);
+}
+
+.sacred-card {
+  position: relative;
+  background: var(--color-canopy);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sacred-card:hover {
+  border-color: rgba(196, 133, 58, 0.25);
+  box-shadow:
+    0 0 30px rgba(196, 133, 58, 0.06),
+    inset 0 0 30px rgba(196, 133, 58, 0.02);
+}
+
+.sacred-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(196, 133, 58, 0.3),
+    transparent
+  );
+}
+
+/* Amber CTA */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: transparent;
+  border: 1px solid var(--color-amber);
+  color: var(--color-gold);
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background: rgba(196, 133, 58, 0.1);
+  box-shadow: 0 0 20px rgba(196, 133, 58, 0.2);
+  color: var(--color-gilt);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-sacred);
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(154, 184, 130, 0.3);
+  color: var(--color-scripture);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* Sage nav links */
+.nav-link {
+  position: relative;
+  color: var(--color-sacred);
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--color-scripture);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link.active {
+  color: var(--color-gold);
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+.verse-block {
+  border-left: 2px solid rgba(196, 133, 58, 0.25);
+  padding: 1rem 1.5rem;
+  font-family: var(--font-verse);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--color-mist);
+  background: rgba(196, 133, 58, 0.03);
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+/* Amber tenet numbers */
+.tenet-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(196, 133, 58, 0.25);
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  color: var(--color-amber);
+  flex-shrink: 0;
+}
+
+#mobile-nav {
+  display: none;
+}
+
+#mobile-nav.open {
+  display: flex;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(196, 133, 58, 0.15); }
+  50% { box-shadow: 0 0 25px rgba(196, 133, 58, 0.35), 0 0 50px rgba(196, 133, 58, 0.1); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}

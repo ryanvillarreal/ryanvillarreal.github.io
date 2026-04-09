@@ -1,0 +1,69 @@
+---
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = '' } = Astro.props;
+
+const nav = [
+  { label: 'Home',       href: '/' },
+  { label: 'The Gospel', href: '/about' },
+  { label: 'Scripture',  href: '/scripture' },
+  { label: 'Initiation', href: '/join' },
+  { label: 'Commune',    href: '/contact' },
+];
+---
+
+<header class="sticky top-0 z-50 border-b border-[#2d2818] bg-[#0a0805]/80 backdrop-blur-md">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="w-8 h-8 rounded-full border border-[#c4853a]/40 flex items-center justify-center group-hover:border-[#d4a050]/60 transition-colors duration-300">
+        <div class="w-3 h-3 rounded-full bg-[#c4853a] group-hover:bg-[#d4a050] transition-colors duration-300" style="box-shadow: 0 0 8px rgba(196,133,58,0.6);"></div>
+      </div>
+      <span class="font-sermon text-sm tracking-[0.15em] uppercase text-[#f2ebe0] group-hover:text-[#d4a050] transition-colors duration-300">
+        NeoCognitive
+      </span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8">
+      {nav.map(({ label, href }) => (
+        <a href={href} class={`nav-link ${currentPath === href ? 'active' : ''}`}>
+          {label}
+        </a>
+      ))}
+    </nav>
+
+    <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Toggle navigation">
+      <span class="w-5 h-px bg-[#9ab882] transition-all duration-300" id="bar1"></span>
+      <span class="w-5 h-px bg-[#9ab882] transition-all duration-300" id="bar2"></span>
+      <span class="w-5 h-px bg-[#9ab882] transition-all duration-300" id="bar3"></span>
+    </button>
+  </div>
+
+  <div id="mobile-nav" class="md:hidden flex-col border-t border-[#2d2818] bg-[#0a0805]/95 px-6 py-4 gap-4">
+    {nav.map(({ label, href }) => (
+      <a href={href} class={`nav-link block py-1 ${currentPath === href ? 'active' : ''}`}>
+        {label}
+      </a>
+    ))}
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  const bar1 = document.getElementById('bar1');
+  const bar2 = document.getElementById('bar2');
+  const bar3 = document.getElementById('bar3');
+  let open = false;
+
+  toggle?.addEventListener('click', () => {
+    open = !open;
+    mobileNav?.classList.toggle('open', open);
+    if (bar1 && bar2 && bar3) {
+      bar1.style.transform = open ? 'translateY(6px) rotate(45deg)' : '';
+      bar2.style.opacity = open ? '0' : '1';
+      bar3.style.transform = open ? 'translateY(-6px) rotate(-45deg)' : '';
+    }
+  });
+</script>

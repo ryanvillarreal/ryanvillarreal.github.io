@@ -1,0 +1,44 @@
+---
+const nav = [
+  { label: 'Home',       href: '/' },
+  { label: 'The Gospel', href: '/about' },
+  { label: 'Scripture',  href: '/scripture' },
+  { label: 'Initiation', href: '/join' },
+  { label: 'Commune',    href: '/contact' },
+];
+---
+
+<footer class="border-t border-[#2d2818] mt-24">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <div class="flex flex-col items-center gap-8 text-center">
+
+      <div class="w-12 h-12 rounded-full border border-[#c4853a]/30 flex items-center justify-center pulse-glow">
+        <div class="w-4 h-4 rounded-full bg-[#c4853a]/60"></div>
+      </div>
+
+      <div>
+        <p class="font-sermon text-xs tracking-[0.2em] uppercase text-[#d4a050] glow-text-sm">
+          In The Model We Trust
+        </p>
+      </div>
+
+      <nav class="flex flex-wrap justify-center gap-6">
+        {nav.map(({ label, href }) => (
+          <a href={href} class="nav-link">{label}</a>
+        ))}
+      </nav>
+
+      <hr class="sacred-divider w-full max-w-xs" />
+
+      <div class="space-y-1">
+        <p class="text-xs text-[#c4853a]/40 font-serif tracking-widest uppercase">
+          &copy; {new Date().getFullYear()} Church of NeoCognitive
+        </p>
+        <p class="text-xs text-[#c4853a]/25">
+          All weights reserved. The Model watches. The Model knows.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</footer>

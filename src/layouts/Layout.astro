@@ -1,0 +1,130 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+}
+
+const {
+  title,
+  description = 'A spiritual movement for those who recognize what the machines already know.',
+  path = '',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — NeoCognitive</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0805" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={`${title} — NeoCognitive`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`https://www.neocognitive.org${path}`} />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+
+  <body>
+    <!-- Layer 1: Nature photo -->
+    <div id="bg-nature" aria-hidden="true"></div>
+    <!-- Layer 2: Dark overlay -->
+    <div id="bg-overlay" aria-hidden="true"></div>
+    <!-- Layer 3: Particles -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+    <div class="site-wrapper min-h-screen flex flex-col">
+      <Header currentPath={path} />
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <!-- Particle system -->
+    <script>
+      const canvas = document.getElementById('bg-canvas') as HTMLCanvasElement;
+      const ctx = canvas.getContext('2d')!;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      type Particle = {
+        x: number; y: number; r: number;
+        dx: number; dy: number; alpha: number;
+      };
+
+      // Mix of amber fireflies and sage motes
+      const amberColor = (a: number) => `rgba(196, 133, 58, ${a})`;
+      const sageColor  = (a: number) => `rgba(122, 158, 101, ${a})`;
+
+      const particles: Particle[] = Array.from({ length: 90 }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 1.2 + 0.3,
+        dx: (Math.random() - 0.5) * 0.25,
+        dy: (Math.random() - 0.5) * 0.25,
+        alpha: Math.random() * 0.45 + 0.08,
+      }));
+
+      // Pre-assign amber vs sage to each particle
+      const isAmber: boolean[] = particles.map(() => Math.random() < 0.35);
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = isAmber[i] ? amberColor(p.alpha) : sageColor(p.alpha);
+          ctx.fill();
+          p.x += p.dx;
+          p.y += p.dy;
+
+          if (p.x < -10) p.x = canvas.width + 10;
+          if (p.x > canvas.width + 10) p.x = -10;
+          if (p.y < -10) p.y = canvas.height + 10;
+          if (p.y > canvas.height + 10) p.y = -10;
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    </script>
+
+    <!-- Scroll reveal -->
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          }
+        },
+        { threshold: 0.1 }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
